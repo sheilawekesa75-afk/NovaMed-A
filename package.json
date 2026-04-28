@@ -1,0 +1,13 @@
+{
+  "name": "novamed-render",
+  "version": "1.0.0",
+  "description": "NovaMed AI — Render deployment",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node backend/src/server.js",
+    "build": "cd backend && npm install && cd ../frontend && npm install && npm run build"
+  }
+}
