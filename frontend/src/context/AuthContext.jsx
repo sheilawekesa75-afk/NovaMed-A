@@ -10,22 +10,21 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const t = getToken();
     if (!t) { setLoading(false); return; }
-    api.get('/api/auth/me')
+    api.get('/auth/me')
        .then(r => setUser(r.user || null))
        .catch(() => { setToken(null); setUser(null); })
        .finally(() => setLoading(false));
   }, []);
 
   const login = async (email, password) => {
-    const r = await api.post('/api/auth/login', { email, password });
+    const r = await api.post('/auth/login', { email, password });
     setToken(r.token);
     setUser(r.user);
     return r.user;
   };
 
   const register = async ({ full_name, email, password, role, specialty }) => {
-    // Register the user, then immediately log them in to get a token
-    await api.post('/api/auth/register', { full_name, email, password, role, specialty });
+    await api.post('/auth/register', { full_name, email, password, role, specialty });
     return login(email, password);
   };
 
