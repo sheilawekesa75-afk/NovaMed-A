@@ -1,15 +1,11 @@
-// Lightweight API client. Reads JWT from localStorage and attaches it.
+const BASE_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
 
-const BASE_URL = import.meta.env.VITE_API_URL || '';
 const TOKEN_KEY = 'novamed_token';
-
 export function getToken()  { return localStorage.getItem(TOKEN_KEY); }
 export function setToken(t) { t ? localStorage.setItem(TOKEN_KEY, t) : localStorage.removeItem(TOKEN_KEY); }
 
 async function request(path, { method = 'GET', body, isForm = false } = {}) {
-  const headers = {
-    'ngrok-skip-browser-warning': 'true',  // bypass ngrok interstitial page
-  };
+  const headers = {};
   const token = getToken();
   if (token) headers['Authorization'] = 'Bearer ' + token;
   if (!isForm && body !== undefined) headers['Content-Type'] = 'application/json';
@@ -39,9 +35,9 @@ async function request(path, { method = 'GET', body, isForm = false } = {}) {
 }
 
 export const api = {
-  get:    (p)            => request(p),
-  post:   (p, body)      => request(p, { method: 'POST',  body }),
-  patch:  (p, body)      => request(p, { method: 'PATCH', body }),
-  del:    (p)            => request(p, { method: 'DELETE' }),
-  upload: (p, formData)  => request(p, { method: 'POST', body: formData, isForm: true }),
+  get:    (p)           => request(p),
+  post:   (p, body)     => request(p, { method: 'POST',  body }),
+  patch:  (p, body)     => request(p, { method: 'PATCH', body }),
+  del:    (p)           => request(p, { method: 'DELETE' }),
+  upload: (p, formData) => request(p, { method: 'POST', body: formData, isForm: true }),
 };
