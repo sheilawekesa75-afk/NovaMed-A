@@ -1,5 +1,6 @@
 // Lightweight API client. Reads JWT from localStorage and attaches it.
 
+const BASE_URL = import.meta.env.VITE_API_URL || '';
 const TOKEN_KEY = 'novamed_token';
 
 export function getToken()  { return localStorage.getItem(TOKEN_KEY); }
@@ -13,7 +14,7 @@ async function request(path, { method = 'GET', body, isForm = false } = {}) {
   if (token) headers['Authorization'] = 'Bearer ' + token;
   if (!isForm && body !== undefined) headers['Content-Type'] = 'application/json';
 
-  const res = await fetch(path, {
+  const res = await fetch(BASE_URL + path, {
     method,
     headers,
     body: body === undefined ? undefined : (isForm ? body : JSON.stringify(body)),
